@@ -1,0 +1,13 @@
+**/public/*
+**/dist/*
+**/target/*
+**/out/*
+**/build/*
+
+**/node_modules/*
+
+*.iml
+*.iws
+**/*.idea
+
+**/*.log
