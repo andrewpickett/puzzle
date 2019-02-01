@@ -7,7 +7,7 @@
 						<router-link to="/">Home</router-link>
 					</li>
 					<li>
-						<router-link to="/completed">Completed</router-link>
+						<router-link to="/instructions">Instructions</router-link>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">

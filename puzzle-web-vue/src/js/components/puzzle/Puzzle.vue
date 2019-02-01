@@ -1,17 +1,11 @@
 <template>
-	<div class="panel panel-primary">
-		<div class="panel-heading">
+	<div class="panel">
+		<!--<div class="panel-heading">
 			<h1 v-if="puzzle">{{ puzzle.title }}</h1>
 			<h1 v-else>&nbsp;</h1>
-		</div>
+		</div>-->
 		<div class="panel-body">
 			<div v-html="puzzleText()"></div>
-			<div v-if="showHints">
-				<hr />
-				<ul>
-					<li v-for="hint in puzzle.hints">{{ hint.description }}</li>
-				</ul>
-			</div>
 		</div>
 	</div>
 </template>

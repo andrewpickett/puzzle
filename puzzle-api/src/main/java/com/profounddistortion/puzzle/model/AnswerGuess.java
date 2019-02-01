@@ -10,9 +10,12 @@ import java.util.Date;
 @Data
 public class AnswerGuess {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private long puzzleId;
 	private String value;
 	private Date guessTime;
+	private long nextPuzzleId;
+	@Column(name = "correct_ind")
+	private boolean correct;
 }

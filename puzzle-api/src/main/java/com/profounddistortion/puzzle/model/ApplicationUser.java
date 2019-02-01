@@ -29,56 +29,47 @@ import lombok.Data;
 @Data
 public class ApplicationUser {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	private String name;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
-	@JsonIgnore
-	@Transient
-	private List<Puzzle> puzzles;
 	@Transient
 	private Puzzle currentPuzzle;
-	@Transient
-	private List<Puzzle> solvedPuzzles;
-	@Transient
-	@JsonIgnore
-	private List<Puzzle> unsolvedPuzzles;
 
-	public void setPuzzles(List<Puzzle> puzzles) {
-		if (puzzles == null) {
-			puzzles = new ArrayList<>();
-		}
-		this.puzzles = puzzles;
-		setSolvedPuzzles();
-		setUnsolvedPuzzles();
-	}
+//	public void setPuzzles(List<Puzzle> puzzles) {
+//		if (puzzles == null) {
+//			puzzles = new ArrayList<>();
+//		}
+//		this.puzzles = puzzles;
+//		setSolvedPuzzles();
+//		setUnsolvedPuzzles();
+//	}
 
-	private void setSolvedPuzzles() {
-		solvedPuzzles = puzzles.stream()
-			.filter(x -> x.isComplete())
-			.sorted(Comparator.comparing(Puzzle::getSequenceNum))
-			.collect(Collectors.toList());
-	}
-
-	private void setUnsolvedPuzzles() {
-		unsolvedPuzzles = puzzles.stream()
-			.filter(x -> !x.isComplete())
-			.sorted(Comparator.comparing(Puzzle::getSequenceNum))
-			.collect(Collectors.toList());
-	}
-
-	public Puzzle getAndSetCurrentPuzzle() {
-		Puzzle current = null;
-		if (puzzles != null) {
-			Optional<Puzzle> opt = puzzles.stream()
-				.filter(x -> !x.isComplete())
-				.min(Comparator.comparing(Puzzle::getSequenceNum));
-			if (opt.isPresent()) {
-				current = opt.get();
-			}
-		}
-		this.currentPuzzle = current;
-		return current;
-	}
+//	private void setSolvedPuzzles() {
+//		solvedPuzzles = puzzles.stream()
+//			.filter(x -> x.isComplete())
+//			.sorted(Comparator.comparing(Puzzle::getSequenceNum))
+//			.collect(Collectors.toList());
+//	}
+//
+//	private void setUnsolvedPuzzles() {
+//		unsolvedPuzzles = puzzles.stream()
+//			.filter(x -> !x.isComplete())
+//			.sorted(Comparator.comparing(Puzzle::getSequenceNum))
+//			.collect(Collectors.toList());
+//	}
+//
+//	public Puzzle getAndSetCurrentPuzzle() {
+//		Puzzle current = null;
+//		if (puzzles != null) {
+//			Optional<Puzzle> opt = puzzles.stream()
+//				.filter(x -> !x.isComplete())
+//				.min(Comparator.comparing(Puzzle::getSequenceNum));
+//			if (opt.isPresent()) {
+//				current = opt.get();
+//			}
+//		}
+//		this.currentPuzzle = current;
+//		return current;
+//	}
 }

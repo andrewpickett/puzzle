@@ -21,11 +21,13 @@ USE `puzzle` ;
 DROP TABLE IF EXISTS `puzzle`.`user` ;
 
 CREATE TABLE IF NOT EXISTS `puzzle`.`user` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
+
+CREATE UNIQUE INDEX `id_UNIQUE` ON `puzzle`.`user` (`id` ASC);
 
 
 -- -----------------------------------------------------
@@ -34,21 +36,18 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `puzzle`.`puzzle` ;
 
 CREATE TABLE IF NOT EXISTS `puzzle`.`puzzle` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL,
   `user_id` INT NOT NULL,
-  `sequence_num` DECIMAL(8,2) NOT NULL,
-  `title` VARCHAR(255) NOT NULL,
+  `prev_puzzle_id` INT NULL,
+  `title` VARCHAR(255) NULL,
   `description` VARCHAR(2000) NOT NULL,
   `answer` VARCHAR(45) NOT NULL,
-  `complete_ind` TINYINT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  INDEX `fk_puzzle_user1_idx` (`user_id` ASC),
-  CONSTRAINT `fk_puzzle_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `puzzle`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  `normalized_ind` TINYINT NOT NULL DEFAULT 0,
+  `complete_time` TIMESTAMP NULL,
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
+
+CREATE UNIQUE INDEX `id_UNIQUE` ON `puzzle`.`puzzle` (`id` ASC);
 
 
 -- -----------------------------------------------------
@@ -57,18 +56,12 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `puzzle`.`hint` ;
 
 CREATE TABLE IF NOT EXISTS `puzzle`.`hint` (
-  `id` INT NOT NULL AUTO_INCREMENT,
   `puzzle_id` INT NOT NULL,
+  `seq_num` INT NOT NULL,
   `description` VARCHAR(2000) NOT NULL,
-  `available_ind` TINYINT NOT NULL,
+  `available_ind` TINYINT NOT NULL DEFAULT 1,
   `hint_time` TIMESTAMP NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_hint_puzzle_idx` (`puzzle_id` ASC),
-  CONSTRAINT `fk_hint_puzzle`
-    FOREIGN KEY (`puzzle_id`)
-    REFERENCES `puzzle`.`puzzle` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`puzzle_id`, `seq_num`))
 ENGINE = InnoDB;
 
 
@@ -82,14 +75,10 @@ CREATE TABLE IF NOT EXISTS `puzzle`.`answer_guess` (
   `puzzle_id` INT NOT NULL,
   `value` VARCHAR(45) NOT NULL,
   `guess_time` TIMESTAMP NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_answer_guess_puzzle1_idx` (`puzzle_id` ASC),
-  CONSTRAINT `fk_answer_guess_puzzle1`
-    FOREIGN KEY (`puzzle_id`)
-    REFERENCES `puzzle`.`puzzle` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`id`))
 ENGINE = InnoDB;
+
+CREATE UNIQUE INDEX `id_UNIQUE` ON `puzzle`.`answer_guess` (`id` ASC);
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

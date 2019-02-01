@@ -7,4 +7,5 @@ import com.profounddistortion.puzzle.model.ApplicationUser;
 public interface UserRepository extends CrudRepository<ApplicationUser, Integer> {
 
 	ApplicationUser findByName(String name);
+
 }

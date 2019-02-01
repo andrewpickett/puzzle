@@ -6,6 +6,8 @@
 			<PuzzleAnswerForm :puzzle-id="puzzle.id" />
 
 			<PreviousGuesses :guesses="puzzle.guesses" />
+
+			<Hints :hints="puzzle.hints" />
 		</div>
 	</div>
 </template>
@@ -19,6 +21,7 @@
 	import Puzzle from './puzzle/Puzzle';
 	import PreviousGuesses from './puzzle/PreviousGuesses';
 	import PuzzleAnswerForm from './puzzle/PuzzleAnswerForm';
+	import Hints from './puzzle/Hints';
 
 	export default {
 		data() {
@@ -28,7 +31,7 @@
 			}
 		},
 		components: {
-			Puzzle, PreviousGuesses, PuzzleAnswerForm
+			Puzzle, PreviousGuesses, PuzzleAnswerForm, Hints
 		},
 		methods: {
 			loadCurrent() {
@@ -38,11 +41,21 @@
 						if (this.puzzle && this.puzzle.guesses && this.puzzle.guesses.length == 0) {
 							this.puzzle.guesses = null;
 						}
+						$('#answer').focus();
 					})
 					.catch((error) => {
 						console.log(error);
 						auth.logout();
 					});
+			},
+
+			showHint() {
+				for (let hint in this.puzzle.hints) {
+					if (hint.available) {
+						hint.available = false;
+						break;
+					}
+				}
 			}
 		},
 		mounted() {

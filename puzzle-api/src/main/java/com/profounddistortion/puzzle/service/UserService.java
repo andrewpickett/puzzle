@@ -2,7 +2,6 @@ package com.profounddistortion.puzzle.service;
 
 import com.profounddistortion.puzzle.model.ApplicationUser;
 import com.profounddistortion.puzzle.model.Puzzle;
-import com.profounddistortion.puzzle.repository.AnswerGuessRepository;
 import com.profounddistortion.puzzle.repository.HintRepository;
 import com.profounddistortion.puzzle.repository.PuzzleRepository;
 import com.profounddistortion.puzzle.repository.UserRepository;
@@ -12,8 +11,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserService {
 	@Autowired
@@ -21,18 +18,12 @@ public class UserService {
 	@Autowired
 	private PuzzleRepository puzzleRepo;
 	@Autowired
-	private AnswerGuessRepository answerRepo;
-	@Autowired
 	private HintRepository hintRepo;
 
 	public Iterable<ApplicationUser> getAllUsers() {
 		Iterable<ApplicationUser> users = userRepo.findAll();
 		for (ApplicationUser user : users) {
-			user.setUnsolvedPuzzles(null);
-			user.setPuzzles(null);
-			user.setCurrentPuzzle(null);
 			user.setPassword(null);
-			user.setSolvedPuzzles(null);
 		}
 		return users;
 	}
@@ -42,13 +33,12 @@ public class UserService {
 
 		JwtAuthenticationToken auth = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
-			user = userRepo.findOne(auth.getId());
+			user = userRepo.findById(auth.getId()).get();
 			if (user != null && includePuzzles) {
-				user.setPuzzles(puzzleRepo.findAllByUserId(user.getId()));
-				Puzzle currentPuzzle = user.getAndSetCurrentPuzzle();
+				user.setCurrentPuzzle(puzzleRepo.findCurrentPuzzleForUser(user.getId()));
+				Puzzle currentPuzzle = user.getCurrentPuzzle();
 				if (currentPuzzle != null) {
-					currentPuzzle.setGuesses(answerRepo.findByPuzzleIdOrderByGuessTimeDesc(currentPuzzle.getId()));
-					currentPuzzle.setHints(hintRepo.findByPuzzleId(currentPuzzle.getId()));
+					currentPuzzle.setHints(hintRepo.findByIdPuzzleId(currentPuzzle.getId()));
 				}
 			}
 		}

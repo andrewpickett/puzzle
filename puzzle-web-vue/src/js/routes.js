@@ -34,6 +34,12 @@ export default new VueRouter({
 			beforeEnter: checkUserAuth
 		},
 		{
+			path: '/instructions',
+			name: 'instructions',
+			component: require('./components/Instructions.vue').default,
+			beforeEnter: checkUserAuth
+		},
+		{
 			path: '/login',
 			name: 'login',
 			component: require('./components/login/Login.vue').default

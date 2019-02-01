@@ -9,9 +9,18 @@ import java.util.Date;
 @Table(name = "hint")
 @Data
 public class Hint {
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
-	private long puzzleId;
+	@EmbeddedId
+	private HintId id;
 	private String description;
+	@Column(name = "available_ind")
+	private boolean available;
+	private Date hintTime;
+
+	public HintId getId() {
+		return id;
+	}
+
+	public void setId(HintId id) {
+		this.id = id;
+	}
 }
