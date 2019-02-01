@@ -3,7 +3,7 @@
 		<Puzzle :puzzle="puzzle" />
 
 		<div v-if="puzzle">
-			<PuzzleAnswerForm :puzzle-id="puzzle.id" />
+			<PuzzleAnswerForm :puzzle="puzzle" :allowHints="allowHints" />
 
 			<PreviousGuesses :guesses="puzzle.guesses" />
 
@@ -16,7 +16,6 @@
 	import axios from 'axios';
 
 	import auth from '../auth';
-	import config from '../config';
 
 	import Puzzle from './puzzle/Puzzle';
 	import PreviousGuesses from './puzzle/PreviousGuesses';
@@ -27,6 +26,7 @@
 		data() {
 			return {
 				answer: '',
+				allowHints: true,
 				puzzle: {}
 			}
 		},
@@ -47,19 +47,13 @@
 						console.log(error);
 						auth.logout();
 					});
-			},
-
-			showHint() {
-				for (let hint in this.puzzle.hints) {
-					if (hint.available) {
-						hint.available = false;
-						break;
-					}
-				}
 			}
 		},
 		mounted() {
 			this.loadCurrent();
+		},
+		updated() {
+			this.allowHints = $(".shown-hint").length < this.puzzle.hints.length;
 		}
 	}
 </script>

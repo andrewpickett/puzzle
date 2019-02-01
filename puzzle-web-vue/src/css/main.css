@@ -48,6 +48,8 @@ h1, h2, h3, h4, h5 {
 	box-shadow: none;
 	border-color: inherit;
 	-webkit-box-shadow: none;
+	background-color: #202020;
+	color: #ffffff;
 }
 
 .answer-form {

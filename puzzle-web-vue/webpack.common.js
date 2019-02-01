@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -11,6 +12,17 @@ module.exports = {
 		path: path.resolve(__dirname, './public'),
 		publicPath: '/public/',
 		filename: 'js/[name].js'
+	},
+	optimization: {
+		splitChunks: {
+			cacheGroups: {
+				vendor: {
+					name: "vendor",
+					test: "vendor",
+					enforce: true
+				}
+			}
+		}
 	},
 	module: {
 		rules: [
@@ -38,9 +50,10 @@ module.exports = {
 			ssr: false,
 			Popper: ['popper.js', 'default']
 		}),
-		new webpack.optimize.CommonsChunkPlugin({
+		new VueLoaderPlugin(),
+		/*new config.optimization.splitChunks({
 			names: ['vendor']
-		}),
+		}),*/
 		new CopyWebpackPlugin([
 			{from: 'src/images', to: 'images'},
 			{from: 'src/css', to: 'css'}

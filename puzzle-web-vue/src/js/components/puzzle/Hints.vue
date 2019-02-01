@@ -1,7 +1,7 @@
 <template>
 	<div v-if="showHints" class="hint-wrapper">
    	<ul>
-			<li v-for="hint in hints" v-if="!hint.available">{{ hint.description }}</li>
+			<li class="shown-hint" v-for="hint in hints" v-if="!hint.available">{{ hint.description }}</li>
 		</ul>
 	</div>
 </template>
@@ -22,7 +22,7 @@
 		padding: 45px 0px;
 		color: #4cae4c;
 		font-family: Consolas, "Courier New", monospace;
-		font-size: 20px;
+		font-size: 16px;
 	}
 
 	.hint-wrapper ul {

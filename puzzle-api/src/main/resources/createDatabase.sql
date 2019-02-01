@@ -38,12 +38,10 @@ DROP TABLE IF EXISTS `puzzle`.`puzzle` ;
 CREATE TABLE IF NOT EXISTS `puzzle`.`puzzle` (
   `id` INT NOT NULL,
   `user_id` INT NOT NULL,
-  `prev_puzzle_id` INT NULL,
   `title` VARCHAR(255) NULL,
   `description` VARCHAR(2000) NOT NULL,
-  `answer` VARCHAR(45) NOT NULL,
-  `normalized_ind` TINYINT NOT NULL DEFAULT 0,
   `complete_time` TIMESTAMP NULL,
+  `next_puzzle_id` INT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
@@ -75,10 +73,27 @@ CREATE TABLE IF NOT EXISTS `puzzle`.`answer_guess` (
   `puzzle_id` INT NOT NULL,
   `value` VARCHAR(45) NOT NULL,
   `guess_time` TIMESTAMP NOT NULL,
+  `correct_ind` TINYINT NOT NULL DEFAULT 0,
+  `next_puzzle_id` INT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
 CREATE UNIQUE INDEX `id_UNIQUE` ON `puzzle`.`answer_guess` (`id` ASC);
+
+
+-- -----------------------------------------------------
+-- Table `puzzle`.`correct_answer`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `puzzle`.`correct_answer` ;
+
+CREATE TABLE IF NOT EXISTS `puzzle`.`correct_answer` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `puzzle_id` INT NOT NULL,
+  `next_puzzle_id` INT NOT NULL,
+  `answer` VARCHAR(45) NOT NULL,
+  `normalized_ind` TINYINT NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
