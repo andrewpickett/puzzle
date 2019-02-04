@@ -34,6 +34,12 @@ export default new VueRouter({
 			beforeEnter: checkUserAuth
 		},
 		{
+			path: '/progress',
+			name: 'progress',
+			component: require('./components/Progress.vue').default,
+			beforeEnter: checkUserAuth
+		},
+		{
 			path: '/instructions',
 			name: 'instructions',
 			component: require('./components/Instructions.vue').default,

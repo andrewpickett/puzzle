@@ -15,7 +15,6 @@ public class AnswerGuess {
 	private long puzzleId;
 	private String value;
 	private Date guessTime;
-	private long nextPuzzleId;
 	@Column(name = "correct_ind")
 	private boolean correct;
 }

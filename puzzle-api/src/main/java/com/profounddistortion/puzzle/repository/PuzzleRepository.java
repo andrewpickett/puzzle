@@ -20,4 +20,5 @@ public interface PuzzleRepository extends CrudRepository<Puzzle, Long> {
 
 	@Query(value=FIND_CURRENT_PUZZLE_FOR_USER, nativeQuery=true)
 	Puzzle findCurrentPuzzleForUser(@Param("userId") Integer userId);
+
 }

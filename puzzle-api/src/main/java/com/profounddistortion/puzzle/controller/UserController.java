@@ -28,8 +28,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/answer", method = RequestMethod.POST)
-	public boolean submitAnswer(@RequestBody AnswerGuess answer) {
-		return puzzleService.submitAnswer(answer);
+	public boolean submitAnswer(@RequestBody AnswerGuess answer, @RequestParam long earnedScore) {
+		return puzzleService.submitAnswer(answer, earnedScore);
 	}
 
 	@RequestMapping(value = "/hint", method = RequestMethod.POST)

@@ -25,7 +25,7 @@ public class PuzzleService {
 	@Autowired
 	private HintRepository hintRepo;
 
-	public boolean submitAnswer(AnswerGuess answer) {
+	public boolean submitAnswer(AnswerGuess answer, long earnedScore) {
 		Date answerDate = new Date();
 		answer.setGuessTime(answerDate);
 		answer.setCorrect(false);
@@ -41,6 +41,7 @@ public class PuzzleService {
 					answer.setCorrect(true);
 					p.setCompleteTime(answerDate);
 					p.setNextPuzzleId(ca.getNextPuzzleId());
+					p.setEarnedScore(earnedScore);
 					puzzleRepo.save(p);
 					break;
 				}

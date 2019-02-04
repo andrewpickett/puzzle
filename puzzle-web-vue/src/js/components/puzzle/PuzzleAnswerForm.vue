@@ -27,15 +27,17 @@
 		props: ['puzzle', 'allowHints'],
 		methods: {
 			submit() {
-				axios.post('/answer', { value: this.answer, puzzleId: this.puzzle.id }, { headers: auth.getAuthHeader() })
-					.then((response) => {
-						this.answer = '';
-						this.$parent.loadCurrent();
-						$('#answer').focus();
-					})
-					.catch((error) => {
-						auth.logout();
-					});
+				if (this.answer != '') {
+					axios.post('/answer?earnedScore=' + this.puzzle.currentScore, {value: this.answer, puzzleId: this.puzzle.id}, {headers: auth.getAuthHeader()})
+						.then((response) => {
+							this.answer = '';
+							this.$parent.loadCurrent();
+							$('#answer').focus();
+						})
+						.catch((error) => {
+							auth.logout();
+						});
+				}
 			},
 			getHint() {
 				axios.post('/hint', {}, { headers: auth.getAuthHeader(), params: { puzzleId: this.puzzle.id }})

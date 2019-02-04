@@ -7,10 +7,16 @@
 						<li class="nav-item active">
 							<router-link to="/" class="nav-link">Home</router-link>
 						</li>
+						<!--<li class="nav-item">
+							<router-link to="/progress" class="nav-link">Progress</router-link>
+						</li>-->
 						<li class="nav-item">
 							<router-link to="/instructions" class="nav-link">Instructions</router-link>
 						</li>
 					</ul>
+					<span v-if="auth.user.admin">
+						<router-link to="/admin" class="nav-link">Admin</router-link>
+    				</span>
 					<span>
 						<a href="/logout" @click.prevent="logout()" class="nav-link">Logout</a>
     				</span>
@@ -52,5 +58,14 @@
 	}
 	.main-content {
 		padding-top: 15px;
+	}
+	.footer {
+		position: absolute;
+		bottom: 0;
+		width: 100%;
+		height: 60px;
+		line-height: 60px;
+		background-color: #202020;
+		color: #9d9d9d;
 	}
 </style>

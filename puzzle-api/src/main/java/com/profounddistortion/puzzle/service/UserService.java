@@ -2,14 +2,15 @@ package com.profounddistortion.puzzle.service;
 
 import com.profounddistortion.puzzle.model.ApplicationUser;
 import com.profounddistortion.puzzle.model.Puzzle;
-import com.profounddistortion.puzzle.repository.HintRepository;
-import com.profounddistortion.puzzle.repository.PuzzleRepository;
-import com.profounddistortion.puzzle.repository.UserRepository;
+import com.profounddistortion.puzzle.repository.*;
 import com.profounddistortion.puzzle.security.JwtAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import java.util.Date;
 
 @Service
 public class UserService {
@@ -19,6 +20,10 @@ public class UserService {
 	private PuzzleRepository puzzleRepo;
 	@Autowired
 	private HintRepository hintRepo;
+	@Autowired
+	private CorrectAnswerRepository correctAnswerRepo;
+	@Autowired
+	private AnswerGuessRepository answerGuessRepo;
 
 	public Iterable<ApplicationUser> getAllUsers() {
 		Iterable<ApplicationUser> users = userRepo.findAll();
@@ -38,7 +43,13 @@ public class UserService {
 				user.setCurrentPuzzle(puzzleRepo.findCurrentPuzzleForUser(user.getId()));
 				Puzzle currentPuzzle = user.getCurrentPuzzle();
 				if (currentPuzzle != null) {
+					if (currentPuzzle.getStartTime() == null) {
+						currentPuzzle.setStartTime(new Date());
+						puzzleRepo.save(currentPuzzle);
+					}
 					currentPuzzle.setHints(hintRepo.findByIdPuzzleId(currentPuzzle.getId()));
+					currentPuzzle.setGuesses(answerGuessRepo.findByPuzzleIdOrderByGuessTimeDesc(currentPuzzle.getId()));
+					currentPuzzle.setEnd(CollectionUtils.isEmpty(correctAnswerRepo.findByPuzzleId(currentPuzzle.getId())));
 				}
 			}
 		}

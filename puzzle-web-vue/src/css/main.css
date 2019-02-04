@@ -55,3 +55,9 @@ h1, h2, h3, h4, h5 {
 .answer-form {
 	border-bottom: 3px dashed #4cae4c;
 }
+
+.btn:active, .btn:focus {
+	outline: none;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+}

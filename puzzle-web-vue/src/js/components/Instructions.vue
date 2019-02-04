@@ -1,7 +1,7 @@
 <template>
 	<div class="container">
 		<div class="panel">
-			Here are your instructions.
+			It's very simple, really: make it
 		</div>
 	</div>
 </template>
