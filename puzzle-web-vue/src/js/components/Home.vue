@@ -11,14 +11,8 @@
 				<PreviousGuesses :guesses="puzzle.guesses" v-if="false" />
 			</div>
 		</div>
-		<footer class="footer">
-			<div class="container">
-				<div class="footer-content">
-					This is my footer content. I'll show current total score, possible score remaining for the current puzzle, etc.
-				</div>
-				<div class="puzzle-progress" :style="{width: (scorePerc * 100) + '%'}">&nbsp;</div>
-			</div>
-		</footer>
+
+		<Footer :summary="summary" :puzzlePerc="puzzlePerc"></Footer>
 	</div>
 </template>
 
@@ -31,6 +25,7 @@
 	import PreviousGuesses from './puzzle/PreviousGuesses';
 	import PuzzleAnswerForm from './puzzle/PuzzleAnswerForm';
 	import Hints from './puzzle/Hints';
+	import Footer from './Footer';
 
 	export default {
 		data() {
@@ -38,30 +33,24 @@
 				answer: '',
 				allowHints: true,
 				puzzle: {},
-				scorePerc: 1.0
+				puzzlePerc: 1.0,
+				summary: {}
 			}
 		},
 		components: {
-			Puzzle, PreviousGuesses, PuzzleAnswerForm, Hints
+			Puzzle, PreviousGuesses, PuzzleAnswerForm, Hints, Footer
 		},
 		methods: {
 			loadCurrent() {
 				axios.get('/', { headers: auth.getAuthHeader() })
 					.then((response) => {
 						this.puzzle = response.data.currentPuzzle;
+						this.summary = response.data.summary;
 						if (this.puzzle) {
 							if (this.puzzle.guesses && this.puzzle.guesses.length == 0) {
 								this.puzzle.guesses = null;
 							}
-							this.scorePerc = (this.puzzle.currentScore / this.puzzle.maxScore);
-
-							if (this.scorePerc < 0.3) {
-								$(".puzzle-progress").addClass("puzzle-progress-red").removeClass("puzzle-progress-amber");
-							} else if (this.scorePerc < 0.7) {
-								$(".puzzle-progress").addClass("puzzle-progress-amber").removeClass("puzzle-progress-red");
-							} else {
-								$(".puzzle-progress").removeClass("puzzle-progress-red").removeClass("puzzle-progress-amber");
-							}
+							this.puzzlePerc = (this.puzzle.currentScore / this.puzzle.maxScore);
 						}
 						$('#answer').focus();
 					})
@@ -81,21 +70,5 @@
 </script>
 
 <style>
-	.puzzle-progress {
-		height: 2px;
-		background-color: #009900;
-		width: 100%;
-		line-height: 2px;
-	}
-
-	.puzzle-progress-red {
-		background-color: #990000;
-	}
-	.puzzle-progress-amber {
-		background-color: #996600;
-	}
-	.footer-content {
-		line-height: 48px;
-	}
 </style>
 

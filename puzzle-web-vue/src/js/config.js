@@ -3,5 +3,6 @@ export default {
 	JWT_STORAGE_KEY: "puzzle.jwt",
 	AXIOS_CONFIG: {
 	},
-	allowedAnonymousRoutes: ['login']
+	allowedAnonymousRoutes: ['login'],
+	GAMIFICATION: true
 }

@@ -2,6 +2,7 @@ package com.profounddistortion.puzzle.service;
 
 import com.profounddistortion.puzzle.model.ApplicationUser;
 import com.profounddistortion.puzzle.model.Puzzle;
+import com.profounddistortion.puzzle.model.UserSummary;
 import com.profounddistortion.puzzle.repository.*;
 import com.profounddistortion.puzzle.security.JwtAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,8 @@ public class UserService {
 					currentPuzzle.setGuesses(answerGuessRepo.findByPuzzleIdOrderByGuessTimeDesc(currentPuzzle.getId()));
 					currentPuzzle.setEnd(CollectionUtils.isEmpty(correctAnswerRepo.findByPuzzleId(currentPuzzle.getId())));
 				}
+
+				user.setSummary(new UserSummary(userRepo.getUserSummaryInfo(user.getId())));
 			}
 		}
 		if (user == null) {
