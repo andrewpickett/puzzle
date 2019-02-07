@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.profounddistortion.puzzle.model.ApplicationUser;
@@ -25,11 +26,10 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {// ext
 		String name = tokenIn.getName();
 		String pw = (String) tokenIn.getCredentials();
 		ApplicationUser applicationUser = userRepo.findByName(name);
-		// TODO: Bcrypt checking
-		if (applicationUser == null || !pw.equals(applicationUser.getPassword())) {
+		if (applicationUser == null || !BCrypt.checkpw(pw, applicationUser.getPassword())) {
 			throw new UsernameNotFoundException(name);
 		}
-		String roleName = applicationUser.getName().equalsIgnoreCase("Andrew") ? "ROLE_ADMIN" : "ROLE_USER";
+		String roleName = applicationUser.isAdmin() ? "ROLE_ADMIN" : "ROLE_USER";
 		return new JwtAuthenticationToken(applicationUser.getId(), applicationUser.getName(), applicationUser.getPassword(), Arrays.asList(new SimpleGrantedAuthority(roleName)));
 	}
 

@@ -10,7 +10,10 @@ truncate puzzle.user;
 -- ------------------------------------------------ --
 -- INSERT USER DATA ------------------------------- --
 -- ------------------------------------------------ --
-insert into puzzle.user (id, name, password) values (1, 'Andrew', 'darkstar');
+insert into puzzle.user (id, name, password, admin) values (1, 'Andrew', '$2a$10$b4DvXIF.IgamFsyO9Dfj7.RXw6pPnlNn1yqSLL6cX4aro1aL.vCF2', 1); -- darkstar
+insert into puzzle.user (id, name, password, admin) values (2, 'Jennifer', '$2a$10$ONGqjQDzHB9fMJzpvZMzwOSS5v70foejsXL2B0/m2lKHP4SRnQkiO', 1); -- ericbrady
+insert into puzzle.user (id, name, password, admin) values (3, 'Ava', '$2a$10$ExKU1IPiHLzOfS3w1lOhR.GJf9G1zWIGa.8ZspU0AX1HLGaZHIcW.', 0); -- abcd.1234
+insert into puzzle.user (id, name, password, admin) values (4, 'Jordan', '$2a$10$GPrrQ2k3FgLaY6rjIjiv7eZXFD5I7vFmgvI7vO8FZq.8It3pELfam', 0); -- 1234.abcd
 
 -- ------------------------------------------------ --
 -- INSERT PUZZLES AND HINTS ----------------------- --

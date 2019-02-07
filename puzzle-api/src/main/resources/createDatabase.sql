@@ -23,7 +23,8 @@ DROP TABLE IF EXISTS `puzzle`.`user` ;
 CREATE TABLE IF NOT EXISTS `puzzle`.`user` (
 															 `id` INT NOT NULL,
 															 `name` VARCHAR(45) NOT NULL,
-															 `password` VARCHAR(45) NOT NULL,
+															 `password` VARCHAR(100) NOT NULL,
+															 `admin` TINYINT NOT NULL DEFAULT 0,
 															 PRIMARY KEY (`id`))
 	ENGINE = InnoDB;
 

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.Data;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +17,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 
+@Data
 public class JwtAuthenticationToken extends UsernamePasswordAuthenticationToken {
 	private static final long serialVersionUID = 6852676492240653239L;
 	
@@ -44,22 +46,6 @@ public class JwtAuthenticationToken extends UsernamePasswordAuthenticationToken 
 		this.id = id;
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-	
 	public static String buildToken(JwtAuthenticationToken auth, JwtContainer jwt) {
 		Map<String, Object> claims = new HashMap<>();
 		claims.put(ID_CLAIM, auth.getId());

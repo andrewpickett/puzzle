@@ -18,6 +18,7 @@ public class ApplicationUser {
 	private String name;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
+	private boolean admin;
 	@Transient
 	private Puzzle currentPuzzle;
 	@Transient
