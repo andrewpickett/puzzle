@@ -1,25 +1,20 @@
 package com.profounddistortion.puzzle.model;
 
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@Data
 public class HintId implements Serializable {
-	@Column(name="puzzle_id")
+	@Column(name = "puzzle_id")
 	private long puzzleId;
-	@Column(name="seq_num")
+	@Column(name = "seq_num")
 	private long seqNum;
-
-//	public HintId() {
-//	}
-//
-//	public HintId(long puzzleId, long seqNum) {
-//		this.puzzleId = puzzleId;
-//		this.seqNum = seqNum;
-//	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -35,19 +30,4 @@ public class HintId implements Serializable {
 		return Objects.hash(puzzleId, seqNum);
 	}
 
-//	public long getPuzzleId() {
-//		return puzzleId;
-//	}
-//
-//	public void setPuzzleId(long puzzleId) {
-//		this.puzzleId = puzzleId;
-//	}
-//
-//	public long getSeqNum() {
-//		return seqNum;
-//	}
-//
-//	public void setSeqNum(long seqNum) {
-//		this.seqNum = seqNum;
-//	}
 }

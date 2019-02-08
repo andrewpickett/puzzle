@@ -19,6 +19,7 @@ public class UserSummary {
 
 	/**
 	 * This assumes the parameter array passed in matches the constructor above.
+	 *
 	 * @param params
 	 */
 	public UserSummary(Object[] params) {
@@ -27,6 +28,7 @@ public class UserSummary {
 
 	/**
 	 * This assumes the parameter is an object array
+	 *
 	 * @param p
 	 */
 	public UserSummary(Object p) {

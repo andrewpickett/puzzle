@@ -1,9 +1,8 @@
 package com.profounddistortion.puzzle.repository;
 
+import com.profounddistortion.puzzle.model.Puzzle;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-
-import com.profounddistortion.puzzle.model.Puzzle;
 import org.springframework.data.repository.query.Param;
 
 public interface PuzzleRepository extends CrudRepository<Puzzle, Long> {
@@ -18,7 +17,7 @@ public interface PuzzleRepository extends CrudRepository<Puzzle, Long> {
 		"                     (SELECT MIN(id) FROM puzzle WHERE user_id = :userId))" +
 		"     AND complete_time IS NULL";
 
-	@Query(value=FIND_CURRENT_PUZZLE_FOR_USER, nativeQuery=true)
+	@Query(value = FIND_CURRENT_PUZZLE_FOR_USER, nativeQuery = true)
 	Puzzle findCurrentPuzzleForUser(@Param("userId") Integer userId);
 
 }

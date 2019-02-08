@@ -1,13 +1,15 @@
 package com.profounddistortion.puzzle.model;
 
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 import org.apache.commons.lang3.time.DateUtils;
 
-import java.util.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "puzzle")

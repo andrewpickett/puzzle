@@ -1,7 +1,7 @@
 package com.profounddistortion.puzzle.security;
 
-import java.util.Arrays;
-
+import com.profounddistortion.puzzle.model.ApplicationUser;
+import com.profounddistortion.puzzle.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -11,11 +11,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import com.profounddistortion.puzzle.model.ApplicationUser;
-import com.profounddistortion.puzzle.repository.UserRepository;
+import java.util.Arrays;
 
 @Service
-public class JwtAuthenticationProvider implements AuthenticationProvider {// extends AbstractUserDetailsAuthenticationProvider {
+public class JwtAuthenticationProvider implements AuthenticationProvider {
 	@Autowired
 	private UserRepository userRepo;
 
@@ -33,8 +32,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {// ext
 		return new JwtAuthenticationToken(applicationUser.getId(), applicationUser.getName(), applicationUser.getPassword(), Arrays.asList(new SimpleGrantedAuthority(roleName)));
 	}
 
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return (JwtAuthenticationToken.class.isAssignableFrom(authentication));
-    }
+	@Override
+	public boolean supports(Class<?> authentication) {
+		return (JwtAuthenticationToken.class.isAssignableFrom(authentication));
+	}
 }
