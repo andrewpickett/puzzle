@@ -2,17 +2,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
+	
 	<parent>
-		<groupId>com.profounddistortion.puzzle</groupId>
-		<artifactId>puzzle-parent</artifactId>
-		<version>1.0.0-SNAPSHOT</version>
-		<relativePath>../pom.xml</relativePath>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.1.2.RELEASE</version>
+		<relativePath/>
 	</parent>
 
+	<groupId>com.profounddistortion.puzzle</groupId>
 	<artifactId>puzzle-api</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Puzzle API</name>
+
+	<properties>
+		<java.version>11</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.build.timestamp.format>yyyy.MM.dd-HH.mm.ss</maven.build.timestamp.format>
+		<project.build.timestamp>${maven.build.timestamp}</project.build.timestamp>
+
+		<commons-lang3.version>3.8.1</commons-lang3.version>
+		<jjwt.version>0.9.1</jjwt.version>
+		<lombok.version>1.18.4</lombok.version>
+	</properties>
 
 	<profiles>
 		<profile>
@@ -52,25 +65,28 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
 		</dependency>
 
 		<!-- JWT -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
-		</dependency>
-
-		<!-- DB -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
+			<version>${jjwt.version}</version>
 		</dependency>
 
 		<!-- Lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<!-- DB -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 	</dependencies>
 
@@ -79,6 +95,21 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>11</source>
+					<target>11</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
