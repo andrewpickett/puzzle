@@ -1,12 +1,17 @@
-from flask import Flask
-from flask_restful import Api
+from flask import Flask, jsonify, Response, redirect
+
+from puzzle_api.resources import protect_with_jwt
 
 app = Flask(__name__)
-api = Api(app)
 
-from puzzle_api import views, models, resources
 
-api.add_resource(resources.UserLogin, '/login')
-api.add_resource(resources.TokenRefresh, '/token/refresh')
-api.add_resource(resources.AllUsers, '/users')
-api.add_resource(resources.Main, '/main')
+@app.route('/', methods=['GET'])
+@protect_with_jwt
+def get_current_puzzle_for_user():
+	return jsonify({'message': 'Hello, World!'})
+
+
+@app.errorhandler(401)
+def custom_401(error):
+	# redirect("/login")
+	return Response("You do not have permission to this page", 401, {'WWW-Authenticate': 'Bearer '})
