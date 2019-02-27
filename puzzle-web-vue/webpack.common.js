@@ -51,9 +51,6 @@ module.exports = {
 			Popper: ['popper.js', 'default']
 		}),
 		new VueLoaderPlugin(),
-		/*new config.optimization.splitChunks({
-			names: ['vendor']
-		}),*/
 		new CopyWebpackPlugin([
 			{from: 'src/images', to: 'images'},
 			{from: 'src/css', to: 'css'}

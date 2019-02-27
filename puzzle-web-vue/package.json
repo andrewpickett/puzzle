@@ -6,9 +6,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start:dev": "cross-env NODE_ENV=development webpack-dev-server --hot --watch-poll --open --config webpack.dev.js",
+    "start:dev": "cross-env NODE_ENV=development SERVER_PORT=11190 webpack-dev-server --hot --watch-poll --open --config webpack.dev.js",
+	 "start:dev:python": "cross-env NODE_ENV=development SERVER_PORT=5000 webpack-dev-server --hot --watch-poll --open --config webpack.dev.js",
     "start:prod": "cross-env NODE_ENV=production webpack-dev-server --hot --watch-poll --open --config webpack.prod.js",
-    "build:dev": "cross-env NODE_ENV=development webpack --progress --hide-modules --watch --config webpack.dev.js",
+    "build:dev": "cross-env NODE_ENV=development BACKEND=java SERVER_PORT=11190 webpack --progress --hide-modules --watch --config webpack.dev.js",
+	 "build:dev:python": "cross-env NODE_ENV=development BACKEND=python SERVER_PORT=5000 webpack --progress --hide-modules --watch --config webpack.dev.js",
     "build:prod": "cross-env NODE_ENV=production webpack --progress --hide-modules --config webpack.prod.js"
   },
   "dependencies": {

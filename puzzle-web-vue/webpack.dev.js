@@ -13,7 +13,16 @@ module.exports = merge(common, {
 		watchOptions: { aggregateTimeout: 300, poll: 1000 }
 	},
 	plugins: [
-		new webpack.HotModuleReplacementPlugin()
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.DefinePlugin({
+			'process.env': {
+				NODE_ENV: '"development"',
+				SERVER_SIDE: {
+					baseUrl: '"http://localhost"',
+					port: JSON.stringify(process.env.SERVER_PORT)
+				}
+			}
+		}),
 	],
 	devtool: 'inline-source-map',
 	performance: {
