@@ -9,3 +9,6 @@ This is the server-side code for the puzzle application. This particular version
 * Python
 * Flask
 * MySQL
+
+**Misc**
+* IntelliJ

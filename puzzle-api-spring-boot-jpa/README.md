@@ -9,3 +9,7 @@ This is the server-side code for the puzzle application. This particular version
 * Java
 * Spring-Boot (with Spring JPA)
 * MySQL
+
+**Misc**
+* Maven
+* IntelliJ

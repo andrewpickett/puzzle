@@ -10,3 +10,6 @@ This is the front-end code for the puzzle application. This particular version i
 * Vue.js
 * webpack
 * Bootstrap 4
+
+**Misc**
+* IntelliJ
