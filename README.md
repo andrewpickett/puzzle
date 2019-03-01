@@ -37,18 +37,22 @@ Along the way, the user will earn points for how well they answered the question
 
 ### Login Screen
 ![][login]
+
 Basic login page. Auth is done through JWT tokens.
 
 ### Puzzle Screen
 ![][puzzle]
+
 Players are presented with the puzzle and an input for their answer. They can ask for hints, if there are any available. Along the bottom shows their progress (if enabled). This includes a bar showing the current maximum score they can get on this puzzle, their current total score, the puzzle number, and the total percentage of maximum points they have received up to this point.
 
 ### Puzzle Hints
 ![][hints]
+
 If the user requests a hint, they are displayed below the input. The bar along the bottom indicating the points they can earn on this puzzle will be shortened and change color if too many points are lost. 
 
 ### Choices, choices!
 ![][choice]
+
 Depending on the answer given, the game can go different directions. As such, the player must make decisions sometimes which can alter the flow of the game. Also the puzzle can contain markup. The password here was the same color as the background, and would only be visible if the player selected the text. 
 
 [login]: ./doc/images/login.png

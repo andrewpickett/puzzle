@@ -7,6 +7,7 @@ Along the way, the user will earn points for how well they answered the question
 ## ER Diagram
 
 ![][er_diagram]
+
 A very simple data model. We have user accounts, puzzles for each user, correct answers for each puzzle, and we keep track of all guesses the user makes. Nothing complicated. 
 
 [er_diagram]: ./er_diagram.png
