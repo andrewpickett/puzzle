@@ -8,6 +8,6 @@ Along the way, the user will earn points for how well they answered the question
 
 ![][er_diagram]
 
-A very simple data model. We have user accounts, puzzles for each user, correct answers for each puzzle, and we keep track of all guesses the user makes. Nothing complicated. 
+A very simple data model. We have user accounts, puzzles for each user, hints and possible correct answers for each puzzle, and we keep track of all guesses the user makes. Nothing complicated. 
 
 [er_diagram]: ./er_diagram.png
