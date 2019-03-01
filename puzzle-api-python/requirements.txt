@@ -4,3 +4,4 @@ flask-cors
 pyjwt
 mysql-connector-python
 jsonpickle
+bcrypt

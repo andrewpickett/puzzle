@@ -1,7 +1,10 @@
-from mysql.connector import pooling
+from contextlib import contextmanager
 
+from mysql.connector import pooling, DatabaseError
+
+import puzzle_api.queries
 from config import config
-from puzzle_api.models import ApplicationUser, Puzzle
+from puzzle_api.models import ApplicationUser, Puzzle, UserSummary
 
 dbconfig = {
     "database": config['database']['schema'],
@@ -15,56 +18,61 @@ db_pool = pooling.MySQLConnectionPool(pool_name=config['database']['pool_name'],
                                       **dbconfig)
 
 
-def create_connection():
-    con = db_pool.get_connection()
-    cur = con.cursor(prepared=True)
-    return con, cur
-
-
-def close_connection(cur, con):
-    if cur:
-        cur.close()
-    if con:
-        con.close()
-
-
-def find_by_id(user_id):
-    user = None
+@contextmanager
+def open_db_connection():
+    connection = db_pool.get_connection()
+    cursor = connection.cursor(prepared=True)
     try:
-        con, cur = create_connection()
-        cur.execute("SELECT id, name, password, admin FROM user WHERE id = %s", (user_id,))
+        yield cursor
+    except DatabaseError as err:
+        cursor.execute("ROLLBACK")
+        raise err
+    finally:
+        if cursor:
+            cursor.close()
+        if connection:
+            connection.close()
+
+
+def find_user_by_id(user_id):
+    user = None
+    with open_db_connection() as cur:
+        cur.execute(puzzle_api.queries.FIND_USER_BY_ID, (user_id,))
         user_data = cur.fetchone()
         if user_data:
             user = ApplicationUser(*user_data)
-    finally:
-        close_connection(cur, con)
+
+    return user
+
+
+def find_user_by_name(name):
+    user = None
+    with open_db_connection() as cur:
+        cur.execute(puzzle_api.queries.FIND_USER_BY_NAME, (name,))
+        user_data = cur.fetchone()
+        if user_data:
+            user = ApplicationUser(*user_data)
 
     return user
 
 
 def find_current_puzzle_for_user(user_id):
-    query = """
-		SELECT * 
-			FROM puzzle 
-		   WHERE id = IFNULL((SELECT next_puzzle_id 
-								FROM puzzle 
-							   WHERE complete_time = (SELECT MAX(complete_time) 
-														FROM puzzle 
-													   WHERE user_id = %s)), 
-							 (SELECT MIN(id) FROM puzzle WHERE user_id = %s))
-			 AND complete_time IS NULL
-	"""
-    try:
-        con, cur = create_connection()
-        cur.execute(query, (user_id, user_id))
+    puzzle = None
+    with open_db_connection() as cur:
+        cur.execute(puzzle_api.queries.FIND_CURRENT_PUZZLE_FOR_USER, (user_id, user_id))
         puzzle_data = cur.fetchone()
         if puzzle_data:
             puzzle = Puzzle(*puzzle_data)
-    finally:
-        close_connection(cur, con)
 
     return puzzle
 
 
-if __name__ == '__main__':
-    find_by_id(1)
+def find_user_summary_for_user(user_id):
+    summary = None
+    with open_db_connection() as cur:
+        cur.execute(puzzle_api.queries.GET_SUMMARY_FOR_USER, (user_id,))
+        summary_data = cur.fetchone()
+        if summary_data:
+            summary = UserSummary(*summary_data)
+
+    return summary

@@ -7,7 +7,9 @@ import jwt
 from config import config
 
 JWT_SECRET_KEY = config['jwt']['secret_key']
-JWT_EXPIRE_MILLIS = config['jwt']['expire_millis']
+JWT_EXPIRE_SECS = config['jwt']['expire_seconds']
+JWT_ALGO = config['jwt']['algorithm']
+JWT_ISSUER = config['jwt']['issuer']
 
 
 def generate_jwt_token(user_id, role, name):
@@ -23,10 +25,10 @@ def generate_jwt_token(user_id, role, name):
         'userId': user_id,
         'role': role,
         'sub': name,
-        'iat': datetime.datetime.now(),
-        'iss': 'ProfoundDistortion',
-        'exp': datetime.datetime.now() + datetime.timedelta(milliseconds=JWT_EXPIRE_MILLIS)
-    }, JWT_SECRET_KEY, algorithm='HS512').decode('utf-8')
+        'iat': int((datetime.datetime.now()).timestamp()),
+        'iss': JWT_ISSUER,
+        'exp': int((datetime.datetime.now() + datetime.timedelta(seconds=JWT_EXPIRE_SECS)).timestamp())
+    }, JWT_SECRET_KEY, algorithm=JWT_ALGO).decode('utf-8')
 
 
 def protect_with_jwt(f):
@@ -59,9 +61,7 @@ def check_jwt_filter(request):
         auth_token = get_jwt_token_from_request(request)
         auth_request = parse_jwt_token(auth_token)
 
-        if auth_request and auth_request[
-            "iss"] == 'ProfoundDistortion' and datetime.datetime.now() < datetime.datetime.fromtimestamp(
-            auth_request["exp"]):
+        if auth_request and auth_request["iss"] == JWT_ISSUER and datetime.datetime.now() < datetime.datetime.fromtimestamp(auth_request["exp"]):
             # TODO: Save auth to some context? or at least just allow them in.
             pass
         else:
@@ -72,7 +72,11 @@ def check_jwt_filter(request):
     return True
 
 
-def get_jwt_token_from_request(request):
+def get_jwt_object_from_request(request):
+    return _parse_jwt_token(_get_jwt_token_from_request(request))
+
+
+def _get_jwt_token_from_request(request):
     header = request.headers["Authorization"]
     if header.startswith('Bearer '):
         return header.replace('Bearer ', '')
@@ -80,7 +84,7 @@ def get_jwt_token_from_request(request):
         raise KeyError("No valid JWT token available on request.")
 
 
-def parse_jwt_token(jwt_token):
+def _parse_jwt_token(jwt_token):
     """
     Decode the encoded JWT token into the object.
 
@@ -88,13 +92,6 @@ def parse_jwt_token(jwt_token):
     :return: The decoded JWT object
     """
     try:
-        return jwt.decode(jwt_token, JWT_SECRET_KEY, algorithms=['HS512'])
+        return jwt.decode(jwt_token, JWT_SECRET_KEY, algorithms=[JWT_ALGO])
     except jwt.InvalidTokenError:
         return None
-
-
-if __name__ == '__main__':
-    token = generate_jwt_token(1, 'ROLE_ADMIN', 'Andrew')
-
-    print(token)
-    print(parse_jwt_token(token))
