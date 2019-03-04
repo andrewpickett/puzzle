@@ -33,10 +33,20 @@ def get_current_puzzle_for_user():
         return "You are not allowed to view this page", 401
 
 
-@app.route('/hint', methods=['GET'])
+@app.route('/hint', methods=['POST'])
 @protect_with_jwt
 def get_hint():
-    return jsonify({'message': 'Get a new hint'})
+    hint = puzzle_api.services.get_hint(int(request.args['puzzleId']))
+    return jsonify(hint is None)
+
+
+@app.route('/answer', methods=['POST'])
+@protect_with_jwt
+def submit_answer():
+    earned_score = int(request.args['earnedScore'])
+    answer = jsonpickle.decode(request.data.decode('utf-8'))
+
+    return jsonify(puzzle_api.services.submit_answer(answer, earned_score))
 
 
 @app.errorhandler(401)

@@ -58,8 +58,8 @@ def check_jwt_filter(request):
     :return: True if the request has a valid JWT token, False otherwise.
     """
     try:
-        auth_token = get_jwt_token_from_request(request)
-        auth_request = parse_jwt_token(auth_token)
+        auth_token = _get_jwt_token_from_request(request)
+        auth_request = _parse_jwt_token(auth_token)
 
         if auth_request and auth_request["iss"] == JWT_ISSUER and datetime.datetime.now() < datetime.datetime.fromtimestamp(auth_request["exp"]):
             # TODO: Save auth to some context? or at least just allow them in.

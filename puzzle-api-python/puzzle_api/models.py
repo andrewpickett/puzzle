@@ -26,10 +26,10 @@ class ApplicationUser:
 
 
 class UserSummary:
-    def __init__(self, puzzle_num=None, total_possible_score=None, current_score=None):
+    def __init__(self, puzzle_num=None, total_possible_score=None, current_score=0):
         self.puzzleNum = puzzle_num
-        self.totalPossibleScore = int(total_possible_score)
-        self.currentScore = int(current_score)
+        self.totalPossibleScore = int(total_possible_score) if total_possible_score else 0
+        self.currentScore = int(current_score) if current_score else 0
         self.scorePerc = self.calculate_score_perc()
 
     def calculate_score_perc(self):
@@ -63,11 +63,8 @@ class Puzzle:
         self.id = puzzle_id
         self.nextPuzzleId = next_puzzle_id
         self.description = description
-        if start_time:
-            self.startTime = start_time.timestamp()
-        else:
-            self.startTime = None
-        self.completeTime = complete_time
+        self.startTime = start_time.timestamp() if start_time else None
+        self.completeTime = complete_time.timestamp() if complete_time else None
         self.userId = user_id
         self.maxScore = max_score
         self.earnedScore = earned_score
@@ -106,3 +103,39 @@ class Puzzle:
             self.currentScore = 0
 
         return self.currentScore
+
+
+class Hint:
+    def __init__(self, puzzle_id=None, seq_num=None, description=None, available=True, hint_time=None):
+        self.puzzleId = puzzle_id
+        self.seqNum = seq_num
+        self.description = description
+        self.available = bool(available)
+        self.hintTime = hint_time
+
+    def __str__(self):
+        return "Hint(puzzle_id=%s, seq_num=%s, description=%s, available=%s)" % (self.puzzleId, self.seqNum, self.description, self.available)
+
+
+class CorrectAnswer:
+    def __init__(self, answer_id=None, puzzle_id=None, next_puzzle_id=None, answer=None, normalized=False):
+        self.id = answer_id
+        self.puzzleId = puzzle_id
+        self.nextPuzzleId = next_puzzle_id
+        self.answer = answer
+        self.normalized = bool(normalized)
+
+    def __str__(self):
+        return "CorrectAnswer(id=%s, puzzle_id=%s, next_puzzle_id=%s, answer=%s, normalized=%s)" % (self.id, self.puzzleId, self.nextPuzzleId, self.answer, self.normalized)
+
+
+class AnswerGuess:
+    def __init__(self, guess_id=None, puzzle_id=None, value=None, guess_time=None, correct=False):
+        self.id = guess_id
+        self.puzzleId = puzzle_id
+        self.value = value
+        self.guessTime = guess_time
+        self.correct = bool(correct)
+
+    def __str__(self):
+        return "AnswerGuess(id=%s, puzzle_id=%s, value=%s, guessTime=%s, correct=%s)" % (self.id, self.puzzleId, self.value, self.guessTime, self.correct)
