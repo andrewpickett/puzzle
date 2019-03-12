@@ -1,8 +1,7 @@
 import datetime
+import re
 
 import bcrypt
-
-import re
 
 import puzzle_api.database
 from puzzle_api.jwt_utils import generate_jwt_token
@@ -84,6 +83,6 @@ def submit_answer(answer, earned_score):
 
 def _get_official_answer(answer, normalize):
     if normalize:
-        return re.sub('\W', '', answer).upper()
+        return re.sub('\\W', '', answer).upper()
 
     return answer

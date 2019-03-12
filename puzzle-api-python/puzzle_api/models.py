@@ -48,7 +48,7 @@ class AnswerGuess:
         self.id = answer_id
         self.puzzleId = puzzle_id
         self.value = value
-        self.guessTime = guess_time
+        self.guessTime = guess_time.timestamp() if guess_time else None
         self.correct = bool(correct)
 
     def __str__(self):
@@ -106,18 +106,38 @@ class Puzzle:
 
 
 class Hint:
+    """ Class representing a hint for a specific puzzle.
+
+    Attributes:
+        puzzleId: The id of the puzzle this hint is tied to.
+        seqNum: The order of the hint to display.
+        description: The actual hint for the puzzle.
+        available: An indicator for whether this hint is available still or not. [DEFAULT: True]
+        hintTime: The time that this hint was given to the user.
+    """
+
     def __init__(self, puzzle_id=None, seq_num=None, description=None, available=True, hint_time=None):
         self.puzzleId = puzzle_id
         self.seqNum = seq_num
         self.description = description
         self.available = bool(available)
-        self.hintTime = hint_time
+        self.hintTime = hint_time.timestamp() if hint_time else None
 
     def __str__(self):
-        return "Hint(puzzle_id=%s, seq_num=%s, description=%s, available=%s)" % (self.puzzleId, self.seqNum, self.description, self.available)
+        return "Hint(puzzleId=%s, seqNum=%s, description=%s, available=%s)" % (self.puzzleId, self.seqNum, self.description, self.available)
 
 
 class CorrectAnswer:
+    """ Class representing a correct answer for a puzzle.
+
+    Attributes:
+        id: The id of the answer.
+        puzzleId: The id of the puzzle this answer is tied to.
+        nextPuzzleId: The id of the next puzzle this answer leads to.
+        answer: The correct answer to the puzzle.
+        normalized: An indicator for whether the answer should be normalized when validating. [DEFAULT: false]
+    """
+
     def __init__(self, answer_id=None, puzzle_id=None, next_puzzle_id=None, answer=None, normalized=False):
         self.id = answer_id
         self.puzzleId = puzzle_id
@@ -126,16 +146,26 @@ class CorrectAnswer:
         self.normalized = bool(normalized)
 
     def __str__(self):
-        return "CorrectAnswer(id=%s, puzzle_id=%s, next_puzzle_id=%s, answer=%s, normalized=%s)" % (self.id, self.puzzleId, self.nextPuzzleId, self.answer, self.normalized)
+        return 'CorrectAnswer(id=%s, puzzleId=%s, nextPuzzleId=%s, answer=%s, normalized=%s)' % (self.id, self.puzzleId, self.nextPuzzleId, self.answer, self.normalized)
 
 
 class AnswerGuess:
+    """ Class representing a guess from the user.
+
+    Attributes:
+        id: The id of the guess.
+        puzzleId: The id of the puzzle this guess is tied to.
+        value: The guess the user made for the puzzle.
+        guessTime: The time that the guess was made.
+        correct: An indicator for whether the guess was a correct answer or not. [DEFAULT: False]
+    """
+
     def __init__(self, guess_id=None, puzzle_id=None, value=None, guess_time=None, correct=False):
         self.id = guess_id
         self.puzzleId = puzzle_id
         self.value = value
-        self.guessTime = guess_time
+        self.guessTime = guess_time.timestamp() if guess_time else None
         self.correct = bool(correct)
 
     def __str__(self):
-        return "AnswerGuess(id=%s, puzzle_id=%s, value=%s, guessTime=%s, correct=%s)" % (self.id, self.puzzleId, self.value, self.guessTime, self.correct)
+        return 'AnswerGuess(id=%s, puzzleId=%s, value=%s, guessTime=%s, correct=%s)' % (self.id, self.puzzleId, self.value, self.guessTime, self.correct)
