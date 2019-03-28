@@ -12,7 +12,7 @@ dbconfig = {
     "user": config['database']['username'],
     "password": config['database']['password'],
     "host": config['database']['host'],
-    "autocommit": True
+    "autocommit": config['database']['autocommit']
 }
 
 db_pool = pooling.MySQLConnectionPool(pool_name=config['database']['pool_name'],
@@ -26,14 +26,18 @@ def open_db_connection():
     cursor = connection.cursor(prepared=True)
     try:
         yield cursor
-    except DatabaseError as err:
-        cursor.execute("ROLLBACK")
-        raise err
+    except DatabaseError:
+        if cursor:
+            cursor.execute("ROLLBACK")
+        raise
     finally:
         if cursor:
             cursor.close()
         if connection:
             connection.close()
+
+    if not dbconfig["autocommit"]:
+        cursor.execute("COMMIT")
 
 
 def find_user_by_id(user_id):

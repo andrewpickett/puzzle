@@ -12,6 +12,7 @@ config = {
         'port': 3306,
         'schema': 'puzzle',
         'pool_name': 'puzzle_pool',
-        'pool_size': 3
+        'pool_size': 3,
+        'autocommit': True
     }
 }
